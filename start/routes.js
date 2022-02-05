@@ -19,3 +19,6 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.post('threads', 'ThreadController.store')
+Route.delete('threads/:id', 'ThreadController.destroy')
