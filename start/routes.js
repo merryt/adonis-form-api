@@ -20,5 +20,5 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.post('threads', 'ThreadController.store')
-Route.delete('threads/:id', 'ThreadController.destroy')
+Route.post('threads', 'ThreadController.store').middleware('auth')
+Route.delete('threads/:id', 'ThreadController.destroy').middleware('auth')
