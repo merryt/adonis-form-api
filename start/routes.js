@@ -14,11 +14,13 @@
 */
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+const Route = use('Route');
 
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
-})
+});
 
-Route.post('threads', 'ThreadController.store').middleware('auth')
-Route.delete('threads/:id', 'ThreadController.destroy').middleware('auth')
+Route.resource('threads', 'ThreadController').only(['store', 'destroy', 'update']).middleware(new Map([
+  [['store', 'destroy', 'update'], ['auth']],
+  [['destroy', 'update'], ['modifyThreadPolicy']]
+]))

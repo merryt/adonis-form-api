@@ -9,13 +9,22 @@ class ThreadController {
     }
 
     async destroy({ params, auth, response }) {
-        const thread = await Thread.findOrFail(params.id)
-
+        const thread = await Thread.findOrFail(params.id);
         if (thread.user_id !== auth.user.id) {
-            return response.status(403).send()
+            return response.forbidden();
         }
 
         await thread.delete()
+    }
+
+    async update({ params, auth, response, request }) {
+        const thread = await Thread.findOrFail(params.id);
+        if (thread.user_id !== auth.user.id) {
+            return response.forbidden();
+        }
+        thread.merge(request.only(['title', 'body']));
+        await thread.save();
+        return response.json({ thread })
     }
 }
 
